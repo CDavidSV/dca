@@ -61,6 +61,16 @@ func (s *StreamingSession) stream() {
 	defer func() {
 		s.Lock()
 		s.running = false
+
+		// send nil to the done channel, ensuring that the stream ended
+		if s.done != nil {
+			if s.err != nil {
+				s.done <- s.err
+			} else {
+				s.done <- nil
+			}
+		}
+
 		s.Unlock()
 	}()
 
