@@ -2,10 +2,11 @@ package dca
 
 import (
 	"errors"
-	"github.com/bwmarrin/discordgo"
 	"io"
 	"sync"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 var (
@@ -53,7 +54,6 @@ func (s *StreamingSession) stream() {
 	if s.running {
 		s.Unlock()
 		panic("Stream is already running!")
-		return
 	}
 	s.running = true
 	s.Unlock()
@@ -99,10 +99,10 @@ func (s *StreamingSession) readNext() error {
 		return err
 	}
 
-	// Timeout after 100ms (Maybe this needs to be changed?)
-	timeOut := time.NewTimer(time.Second)
+	// Timeout after 5s
+	timeOut := time.NewTimer(5 * time.Second)
 
-	// This will attempt to send on the channel before the timeout, which is 1s
+	// This will attempt to send on the channel before the timeout, which is 5s
 	select {
 	case <-timeOut.C:
 		return ErrVoiceConnClosed
