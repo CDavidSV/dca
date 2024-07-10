@@ -203,7 +203,6 @@ func (e *EncodeSession) run() {
 	args := []string{
 		"-stats",
 		"-reconnect", "1",
-		"-reconnect_at_eof", "1",
 		"-reconnect_streamed", "1",
 		"-reconnect_delay_max", "2",
 		"-i", inFile,
@@ -332,7 +331,7 @@ func (e *EncodeSession) writeMetadataFrame() {
 		var ffprobeData *FFprobeMetadata
 		err = json.Unmarshal(cmdBuf.Bytes(), &ffprobeData)
 		if err != nil {
-			logln("Erorr unmarshaling the FFprobe JSON:", err)
+			logln("Error unmarshaling the FFprobe JSON:", err)
 			return
 		}
 
