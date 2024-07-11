@@ -63,7 +63,7 @@ func (s *StreamingSession) stream() {
 		s.running = false
 
 		// send nil to the done channel, ensuring that the stream ended
-		if s.done != nil {
+		if s.done != nil && !s.paused {
 			if s.err != nil {
 				s.done <- s.err
 			} else {
@@ -89,12 +89,6 @@ func (s *StreamingSession) stream() {
 			s.finished = true
 			if err != io.EOF {
 				s.err = err
-			}
-
-			if s.done != nil {
-				go func() {
-					s.done <- err
-				}()
 			}
 
 			s.Unlock()
